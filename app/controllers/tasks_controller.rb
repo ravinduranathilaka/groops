@@ -8,6 +8,12 @@ class TasksController < ApplicationController
   
     # Fetch tasks where visible_up_to_id matches those groups
     @tasks = Task.where(visible_up_to_id: group_ids)
+    # Search tasks
+    if params[:query].present?
+      @tasks = @tasks.where("name ILIKE ? OR description ILIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
+    else
+      @tasks = @tasks
+    end
   end
 
   # GET /tasks/1 or /tasks/1.json
