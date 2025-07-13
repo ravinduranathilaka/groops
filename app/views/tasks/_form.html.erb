@@ -24,16 +24,20 @@
 
   <!-- Assigned To -->
   <div class="my-5">
-    <%= form.label :assigned_to_id, "Assign To" %>
-    <%= form.collection_select :assigned_to_id, User.all, :id, :name, { prompt: "Select User" }, class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full #{'border-red-400 focus:outline-red-600' if task.errors[:assigned_to_id].any?}" %>
+  <%= form.label :assigned_to_id, "Assign To" %>
+  <%= form.collection_select :assigned_to_id, @available_users, :id, :name,
+      { prompt: "Select User" },
+      class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full #{'border-red-400 focus:outline-red-600' if task.errors[:assigned_to_id].any?}" %>
   </div>
 
   <!-- Visible Up To (Group) -->
   <div class="my-5">
   <%= form.label :visible_up_to_id, "Visible Up To (Group)" %>
-    <%= form.collection_select :visible_up_to_id, Group.all, :id, :name, { prompt: "Select Group" }, 
-        { class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full #{'border-red-400 focus:outline-red-600' if task.errors[:visible_up_to_id].any?}",
-          selected: task.visible_up_to_id || current_user.group_id } %>
+<%= form.collection_select :visible_up_to_id, @available_groups, :id, :name,
+    { prompt: "Select Group" },
+    { class: "block shadow-sm rounded-md border px-3 py-2 mt-2 w-full #{'border-red-400 focus:outline-red-600' if task.errors[:visible_up_to_id].any?}",
+      selected: task.visible_up_to_id || current_user.group_id} %>
+
   </div>
 
   <!-- Urgency -->

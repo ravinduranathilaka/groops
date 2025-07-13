@@ -3,7 +3,17 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    # Find all groups accessible from the current user’s group
+    group_ids = current_user.group.bfs_descendant_ids
+  
+    # Fetch tasks where visible_up_to_id matches those groups
+    @tasks = Task.where(visible_up_to_id: group_ids)
+    # Search tasks
+    if params[:query].present?
+      @tasks = @tasks.where("name ILIKE ? OR description ILIKE ?", "%#{params[:query]}%", "%#{params[:query]}%")
+    else
+      @tasks = @tasks
+    end
   end
 
   # GET /tasks/1 or /tasks/1.json
@@ -13,6 +23,15 @@ class TasksController < ApplicationController
   # GET /tasks/new
   def new
     @task = Task.new
+      # Get current group and descendants
+    group_ids = current_user.group.bfs_descendant_ids
+
+    # Include user's own group if it's not already in bfs_descendant_ids
+    group_ids << current_user.group_id unless group_ids.include?(current_user.group_id)
+
+    # Load filtered groups and users
+    @available_groups = Group.where(id: group_ids).order(:name)
+    @available_users = User.where(group_id: group_ids).order(:name)
   end
 
   # GET /tasks/1/edit
