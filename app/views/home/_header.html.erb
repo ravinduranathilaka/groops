@@ -12,23 +12,20 @@
       <!-- Navigation Menu -->
       <nav class="hidden md:flex items-center space-x-8">
         <a href="<%= root_path %>" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-          Home
+          Tasks
         </a>
-        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-          About
+        <a href="<%= groups_path %>" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+          Manage Groups
         </a>
-        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-          Services
-        </a>
-        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
-          Contact
+        <a href="<%= users_path %>" class="text-gray-700 hover:text-blue-600 font-medium transition-colors">
+          Manage Users
         </a>
       </nav>
       
       <!-- Action Buttons -->
       <div class="flex items-center space-x-4">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors">
-          Get Started
+        <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors" onclick="window.location.href='<%= new_task_path %>'">
+          New Task
         </button>
         
         <!-- Mobile menu button -->
@@ -44,16 +41,16 @@
     <div class="md:hidden mt-4 pb-4 border-t pt-4">
       <div class="flex flex-col space-y-2">
         <a href="<%= root_path %>" class="text-gray-700 hover:text-blue-600 font-medium py-2">
-          Home
+          Tasks
         </a>
-        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium py-2">
-          About
+        <a href="<%= groups_path %>" class="text-gray-700 hover:text-blue-600 font-medium py-2">
+          Manage Groups
         </a>
-        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium py-2">
-          Services
+        <a href="<%= users_path %>" class="text-gray-700 hover:text-blue-600 font-medium py-2">
+          Manage Users
         </a>
-        <a href="#" class="text-gray-700 hover:text-blue-600 font-medium py-2">
-          Contact
+        <a href="<%= new_task_path %>" class="text-gray-700 hover:text-blue-600 font-medium py-2">
+          New Task
         </a>
       </div>
     </div>
