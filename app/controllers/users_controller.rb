@@ -13,15 +13,26 @@ class UsersController < ApplicationController
   # GET /users/new
   def new
     @user = User.new
+
+    group_ids = current_user.group.bfs_descendant_ids
+    @assignable_groups = Group.where(id: group_ids)
   end
 
   # GET /users/1/edit
   def edit
+
+    group_ids = current_user.group.bfs_descendant_ids
+    @assignable_groups = Group.where(id: group_ids)
   end
 
   def check_username
-    user = User.find_by(username: params[:username])
-    available = user.nil?
+    username = params[:username].to_s.strip
+
+    available =
+      username.present? &&
+      username.length >= 3 &&
+      !User.exists?(username: username)
+  
     render json: { available: available }
   end
 

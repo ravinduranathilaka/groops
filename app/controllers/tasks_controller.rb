@@ -36,6 +36,15 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
+    # Get current group and descendants
+    group_ids = current_user.group.bfs_descendant_ids
+  
+    # Include user's own group if it's not already in bfs_descendant_ids
+    group_ids << current_user.group_id unless group_ids.include?(current_user.group_id)
+  
+    # Load filtered groups and users
+    @available_groups = Group.where(id: group_ids).order(:name)
+    @available_users = User.where(group_id: group_ids).order(:name)
   end
 
   # POST /tasks or /tasks.json
@@ -89,6 +98,16 @@ class TasksController < ApplicationController
         format.json { render json: @task.errors, status: :unprocessable_entity }
       end
     end
+
+    # Get current group and descendants
+    group_ids = current_user.group.bfs_descendant_ids
+
+    # Include user's own group if it's not already in bfs_descendant_ids
+    group_ids << current_user.group_id unless group_ids.include?(current_user.group_id)
+      
+    # Load filtered groups and users
+    @available_groups = Group.where(id: group_ids).order(:name)
+    @available_users = User.where(group_id: group_ids).order(:name)
   end
 
   # DELETE /tasks/1 or /tasks/1.json
