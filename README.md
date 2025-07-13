@@ -1,6 +1,39 @@
 # Groops
 
-A modern Rails 8 application built with PostgreSQL, Tailwind CSS, and Hotwire.
+A modern Rails 8 task management application with hierarchical group organization, built with PostgreSQL, Tailwind CSS, and Hotwire.
+
+## Overview
+
+Groops is a collaborative task management system that allows organizations to:
+- **Organize hierarchically**: Create nested groups with parent-child relationships
+- **Manage tasks efficiently**: Create, assign, and track tasks with different urgency levels and statuses
+- **Control visibility**: Tasks are visible to users based on their group hierarchy
+- **User authentication**: Secure login system with password protection
+
+## Features
+
+### 🔐 Authentication System
+- User registration and login with secure password hashing
+- Session-based authentication
+- Protected routes requiring login
+
+### 🏢 Hierarchical Group Management
+- Create nested organizational groups (parent-child relationships)
+- Breadth-First Search algorithm for efficient group traversal
+- Users belong to specific groups within the hierarchy
+
+### 📋 Task Management
+- **Task Creation**: Create tasks with name, description, and urgency levels
+- **Assignment System**: Assign tasks to specific users or leave unassigned
+- **Status Tracking**: Track task progress (unassigned → assigned → started → completed → cancelled)
+- **Visibility Control**: Tasks are visible based on group hierarchy
+- **Search Functionality**: Search tasks by name or description
+- **Urgency Levels**: Urgent, High, Mid, Low priority levels
+
+### 🎨 Modern UI
+- Responsive design with Tailwind CSS
+- Hotwire for dynamic interactions
+- Clean, intuitive interface
 
 ## Prerequisites
 
@@ -59,6 +92,29 @@ A modern Rails 8 application built with PostgreSQL, Tailwind CSS, and Hotwire.
    ```
 
    The application will be available at `http://localhost:3000`
+
+## Database Schema
+
+### Users
+- `username`: Unique username for login
+- `password_digest`: Hashed password (using bcrypt)
+- `name`: Display name
+- `group_id`: Belongs to a group
+
+### Groups
+- `name`: Group name
+- `parent_id`: Optional parent group (self-referential)
+
+### Tasks
+- `name`: Task title
+- `description`: Task details
+- `created_by_id`: User who created the task
+- `assigned_to_id`: User assigned to the task (optional)
+- `visible_up_to_id`: Group up to which the task is visible
+- `urgency`: Priority level (urgent, high, mid, low)
+- `status`: Current status (unassigned, assigned, started, completed, cancelled)
+- `assigned_on`: Timestamp when task was assigned
+- `completed_on`: Timestamp when task was completed
 
 ## Configuration
 
@@ -119,6 +175,7 @@ rails db:seed
 - **Frontend**: Tailwind CSS, Stimulus, Turbo
 - **Asset Pipeline**: Propshaft
 - **JavaScript**: Import maps (ESM)
+- **Authentication**: bcrypt for password hashing
 - **Deployment**: Kamal (Docker-based)
 
 ## Project Structure
@@ -127,7 +184,15 @@ rails db:seed
 Groops/
 ├── app/                    # Application code
 │   ├── controllers/       # Rails controllers
+│   │   ├── application_controller.rb  # Base controller with auth
+│   │   ├── sessions_controller.rb     # Login/logout handling
+│   │   ├── tasks_controller.rb        # Task CRUD operations
+│   │   ├── users_controller.rb        # User management
+│   │   └── groups_controller.rb       # Group management
 │   ├── models/           # ActiveRecord models
+│   │   ├── user.rb       # User model with authentication
+│   │   ├── group.rb      # Group model with hierarchy
+│   │   └── task.rb       # Task model with status/urgency
 │   ├── views/            # ERB templates
 │   ├── javascript/       # JavaScript files
 │   └── assets/          # CSS, images, etc.
@@ -136,6 +201,20 @@ Groops/
 ├── test/                # Test files
 └── public/              # Static files
 ```
+
+## Key Features Implementation
+
+### Hierarchical Group System
+The application uses a self-referential association for groups, allowing unlimited nesting levels. The `bfs_descendant_ids` method in the Group model efficiently traverses the hierarchy using Breadth-First Search.
+
+### Task Visibility
+Tasks are visible to users based on their group hierarchy. Users can see tasks that are visible up to their group or any descendant groups.
+
+### Authentication Flow
+1. Users must log in to access the application
+2. Sessions are managed securely with user ID storage
+3. All routes (except login) require authentication
+4. Password hashing is handled by bcrypt
 
 ## Deployment
 
