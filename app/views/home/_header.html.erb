@@ -27,17 +27,26 @@
         <button class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition-colors" onclick="window.location.href='<%= new_task_path %>'">
           New Task
         </button>
+
         <% if logged_in? %>
-        <button class="btn" popovertarget="popover-1" style="anchor-name:--anchor-1">
-          <%= current_user.name %>
-        </button>
-        <ul class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
-          popover id="popover-1" style="position-anchor:--anchor-1">
-          <li><a href="<%= logout_path %>">Logout</a></li>
-        </ul>
+          <!-- User Dropdown -->
+          <div class="relative">
+            <button class="btn" popovertarget="popover-1" style="anchor-name:--anchor-1">
+              <%= current_user.name %>
+            </button>
+            <ul class="dropdown menu w-52 rounded-box bg-base-100 shadow-sm"
+                popover id="popover-1" style="position-anchor:--anchor-1">
+              <li>
+                <%= link_to "Profile", "#" %>
+              </li>
+              <li>
+                <!-- Proper logout button -->
+                <%= button_to "Logout", logout_path, method: :delete, class: "text-red-600 hover:text-red-800 w-full text-left px-4 py-2", form_class: "w-full text-left" %>
+              </li>
+            </ul>
+          </div>
         <% end %>
 
-        
         <!-- Mobile menu button -->
         <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" type="button">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -62,6 +71,9 @@
         <a href="<%= new_task_path %>" class="text-gray-700 hover:text-blue-600 font-medium py-2">
           New Task
         </a>
+        <% if logged_in? %>
+          <%= button_to "Logout", logout_path, method: :delete, class: "text-red-600 hover:text-red-800 w-full text-left px-4 py-2", form_class: "w-full text-left" %>
+        <% end %>
       </div>
     </div>
   </div>

@@ -3,7 +3,7 @@ class GroupsController < ApplicationController
 
   # GET /groups or /groups.json
   def index
-    @groups = Group.all
+    @groups = Group.where.not(id: current_user.group_id)
   end
 
   # GET /groups/1 or /groups/1.json
@@ -49,11 +49,11 @@ class GroupsController < ApplicationController
 
   # DELETE /groups/1 or /groups/1.json
   def destroy
-    @group.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to groups_path, status: :see_other, notice: "Group was successfully destroyed." }
-      format.json { head :no_content }
+    if @group.id == current_user.group_id
+      redirect_to groups_path, alert: "You cannot delete the group you belong to."
+    else
+      @group.destroy
+      redirect_to groups_path, notice: "Group deleted successfully."
     end
   end
 

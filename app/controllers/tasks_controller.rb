@@ -24,6 +24,13 @@ class TasksController < ApplicationController
     @task = Task.new(task_params)
     @task.created_by = current_user
 
+    if @task.assigned_to_id.present?
+      @task.status = "assigned"
+      @task.assigned_on = Time.current
+    else
+      @task.status = "unassigned"
+    end
+
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: "Task was successfully created." }
@@ -37,6 +44,23 @@ class TasksController < ApplicationController
 
   # PATCH/PUT /tasks/1 or /tasks/1.json
   def update
+
+    if @task.update(task_params)
+      # Handle status changes
+      if @task.status == "completed" && @task.completed_on.blank?
+        @task.update(completed_on: Time.current)
+      elsif @task.status != "completed" && @task.completed_on.present?
+        @task.update(completed_on: nil)
+      end
+  
+      # Handle assignment changes
+      if @task.assigned_to_id.present? && @task.status == "unassigned"
+        @task.update(status: "assigned", assigned_on: Time.current)
+      elsif @task.assigned_to_id.blank? && @task.status == "assigned"
+        @task.update(status: "unassigned", assigned_on: nil)
+      end
+    end
+
     respond_to do |format|
       if @task.update(task_params)
         format.html { redirect_to @task, notice: "Task was successfully updated." }

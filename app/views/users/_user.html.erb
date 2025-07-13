@@ -4,15 +4,11 @@
     <%= user.username %>
   </div>
   <div>
-    <strong class="block font-medium mb-1">Password digest:</strong>
-    <%= user.password_digest %>
-  </div>
-  <div>
     <strong class="block font-medium mb-1">Name:</strong>
     <%= user.name %>
   </div>
   <div>
     <strong class="block font-medium mb-1">Group:</strong>
-    <%= user.group_id %>
+    <%= user.group&.name || "No Group" %>
   </div>
 </div>

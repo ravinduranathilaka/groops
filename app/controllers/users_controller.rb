@@ -3,7 +3,7 @@ class UsersController < ApplicationController
 
   # GET /users or /users.json
   def index
-    @users = User.all
+    @users = User.where.not(id: current_user.id)
   end
 
   # GET /users/1 or /users/1.json
@@ -17,6 +17,12 @@ class UsersController < ApplicationController
 
   # GET /users/1/edit
   def edit
+  end
+
+  def check_username
+    user = User.find_by(username: params[:username])
+    available = user.nil?
+    render json: { available: available }
   end
 
   # POST /users or /users.json
@@ -49,11 +55,11 @@ class UsersController < ApplicationController
 
   # DELETE /users/1 or /users/1.json
   def destroy
-    @user.destroy!
-
-    respond_to do |format|
-      format.html { redirect_to users_path, status: :see_other, notice: "User was successfully destroyed." }
-      format.json { head :no_content }
+    if @user.id == current_user.id
+      redirect_to users_path, alert: "You cannot delete yourself."
+    else
+      @user.destroy
+      redirect_to users_path, notice: "User deleted successfully."
     end
   end
 
@@ -65,6 +71,6 @@ class UsersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_params
-      params.expect(user: [ :username, :password_digest, :name, :group_id ])
+      params.require(:user).permit(:username, :password, :name, :group_id)
     end
 end

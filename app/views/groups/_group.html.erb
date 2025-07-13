@@ -5,6 +5,6 @@
   </div>
   <div>
     <strong class="block font-medium mb-1">Parent:</strong>
-    <%= group.parent_id %>
+    <%= group.parent&.name || "No parent" %>
   </div>
 </div>
