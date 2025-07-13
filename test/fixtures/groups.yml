@@ -1,13 +1,9 @@
 # Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  username: MyString
-  password_digest: MyString
   name: MyString
-  group: one
+  parent: one
 
 two:
-  username: MyString
-  password_digest: MyString
   name: MyString
-  group: two
+  parent: two

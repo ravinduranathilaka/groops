@@ -1,0 +1,38 @@
+<div id="<%= dom_id task %>" class="w-full sm:w-auto my-5 space-y-5">
+  <div>
+    <strong class="block font-medium mb-1">Name:</strong>
+    <%= task.name %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Description:</strong>
+    <%= task.description %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Created by:</strong>
+    <%= task.created_by_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Assigned to:</strong>
+    <%= task.assigned_to_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Visible up to:</strong>
+    <%= task.visible_up_to_id %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Urgency:</strong>
+    <%= task.urgency %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Status:</strong>
+    <%= task.status %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Assigned on:</strong>
+    <%= task.assigned_on %>
+  </div>
+  <div>
+    <strong class="block font-medium mb-1">Completed on:</strong>
+    <%= task.completed_on %>
+  </div>
+</div>

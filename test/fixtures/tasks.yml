@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  name: MyString
+  description: MyText
+  created_by: one
+  assigned_to: one
+  visible_up_to: one
+  urgency: 1
+  status: 1
+  assigned_on: 2025-07-12 23:22:08
+  completed_on: 2025-07-12 23:22:08
+
+two:
+  name: MyString
+  description: MyText
+  created_by: two
+  assigned_to: two
+  visible_up_to: two
+  urgency: 1
+  status: 1
+  assigned_on: 2025-07-12 23:22:08
+  completed_on: 2025-07-12 23:22:08
