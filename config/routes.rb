@@ -6,7 +6,11 @@ Rails.application.routes.draw do
   post "/login", to: "sessions#create"
   delete "/logout", to: "sessions#destroy"
   resources :tasks
-  resources :users
+  resources :users do
+    collection do
+      get :check_username
+    end
+  end
   resources :groups
   #get "home/index"
   root "tasks#index"

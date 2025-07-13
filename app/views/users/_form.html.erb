@@ -11,27 +11,79 @@
     </div>
   <% end %>
 
+  <!-- Username -->
   <div class="my-5">
-    <%= form.label :username %>
-    <%= form.text_field :username, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:username].none?, "border-red-400 focus:outline-red-600": user.errors[:username].any?}] %>
+  <div class="my-5">
+  <%= form.label :username %>
+    <%= form.text_field :username, id: "username-input", class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full"] %>
+    <p id="username-status" class="mt-1 text-sm"></p>
   </div>
 
+  <!-- Password -->
   <div class="my-5">
-    <%= form.label :password_digest %>
-    <%= form.text_field :password_digest, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:password_digest].none?, "border-red-400 focus:outline-red-600": user.errors[:password_digest].any?}] %>
+    <%= form.label :password %>
+    <%= form.password_field :password, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:password].none?, "border-red-400 focus:outline-red-600": user.errors[:password].any?}] %>
+    <p class="text-sm text-red-500 mt-1">⚠️ Please be sure to note this password, you may not see it again.</p>
   </div>
 
+  <!-- Name -->
   <div class="my-5">
     <%= form.label :name %>
     <%= form.text_field :name, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:name].none?, "border-red-400 focus:outline-red-600": user.errors[:name].any?}] %>
   </div>
 
+  <!-- Group -->
   <div class="my-5">
-    <%= form.label :group_id %>
-    <%= form.text_field :group_id, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:group_id].none?, "border-red-400 focus:outline-red-600": user.errors[:group_id].any?}] %>
+    <%= form.label :group_id, "Group" %>
+    <%= form.collection_select :group_id, Group.all, :id, :name, { prompt: "Select Group" }, class: ["block shadow-sm rounded-md border px-3 py-2 mt-2 w-full", {"border-gray-400 focus:outline-blue-600": user.errors[:group_id].none?, "border-red-400 focus:outline-red-600": user.errors[:group_id].any?}] %>
   </div>
 
+  <!-- Submit -->
   <div class="inline">
     <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
   </div>
 <% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const usernameInput = document.getElementById("username-input");
+    const statusText = document.getElementById("username-status");
+    let debounceTimeout = null;
+
+    usernameInput.addEventListener("input", () => {
+      const username = usernameInput.value.trim();
+
+      // Reset previous debounce
+      clearTimeout(debounceTimeout);
+
+      if (username.length < 3) {
+        statusText.textContent = "Username must be at least 3 characters.";
+        statusText.className = "text-red-500 mt-1 text-sm";
+        return;
+      }
+
+      // Show "checking..." immediately
+      statusText.textContent = "🔄 Checking availability...";
+      statusText.className = "text-gray-500 mt-1 text-sm";
+
+      // Debounce fetch call by 300ms
+      debounceTimeout = setTimeout(() => {
+        fetch(`/users/check_username?username=${encodeURIComponent(username)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.available) {
+              statusText.textContent = "✅ Username is available.";
+              statusText.className = "text-green-500 mt-1 text-sm";
+            } else {
+              statusText.textContent = "❌ Username is already taken.";
+              statusText.className = "text-red-500 mt-1 text-sm";
+            }
+          })
+          .catch(() => {
+            statusText.textContent = "⚠️ Error checking username.";
+            statusText.className = "text-red-500 mt-1 text-sm";
+          });
+      }, 300); // wait 300ms after typing stops
+    });
+  });
+</script>
