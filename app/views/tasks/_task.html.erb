@@ -1,38 +1,50 @@
-<div id="<%= dom_id task %>" class="w-full sm:w-auto my-5 space-y-5">
+<div id="<%= dom_id task %>" class="w-full p-4 border rounded-lg shadow-sm bg-white space-y-3">
+  <!-- Task Name -->
   <div>
-    <strong class="block font-medium mb-1">Name:</strong>
-    <%= task.name %>
+    <h2 class="text-xl font-bold text-gray-800"><%= task.name %></h2>
+    <p class="text-gray-600"><%= task.description.presence || "No description provided." %></p>
   </div>
-  <div>
-    <strong class="block font-medium mb-1">Description:</strong>
-    <%= task.description %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Created by:</strong>
-    <%= task.created_by_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Assigned to:</strong>
-    <%= task.assigned_to_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Visible up to:</strong>
-    <%= task.visible_up_to_id %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Urgency:</strong>
-    <%= task.urgency %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Status:</strong>
-    <%= task.status %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Assigned on:</strong>
-    <%= task.assigned_on %>
-  </div>
-  <div>
-    <strong class="block font-medium mb-1">Completed on:</strong>
-    <%= task.completed_on %>
+
+  <!-- Metadata -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-700">
+    <!-- Creator -->
+    <div>
+      <strong class="block font-medium text-gray-900">Created by:</strong>
+      <span><%= task.created_by&.name || "Unknown" %></span>
+    </div>
+
+    <!-- Assigned To -->
+    <div>
+      <strong class="block font-medium text-gray-900">Assigned to:</strong>
+      <span><%= task.assigned_to&.name || "Unassigned" %></span>
+    </div>
+
+    <!-- Visibility -->
+    <div>
+      <strong class="block font-medium text-gray-900">Visible to group:</strong>
+      <span><%= task.visible_up_to&.name || "None" %></span>
+    </div>
+
+    <!-- Urgency -->
+    <div>
+      <strong class="block font-medium text-gray-900">Urgency:</strong>
+      <span class="<%= urgency_color(task.urgency) %>"><%= task.urgency.titleize %></span>
+    </div>
+
+    <!-- Status -->
+    <div>
+      <strong class="block font-medium text-gray-900">Status:</strong>
+      <span class="<%= status_color(task.status) %>"><%= task.status.titleize %></span>
+    </div>
+
+    <!-- Timestamps -->
+    <div>
+      <strong class="block font-medium text-gray-900">Assigned on:</strong>
+      <span><%= task.assigned_on&.strftime("%b %d, %Y %H:%M") || "Not yet assigned" %></span>
+    </div>
+    <div>
+      <strong class="block font-medium text-gray-900">Completed on:</strong>
+      <span><%= task.completed_on&.strftime("%b %d, %Y %H:%M") || "Not yet completed" %></span>
+    </div>
   </div>
 </div>
