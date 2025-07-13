@@ -3,7 +3,11 @@ class TasksController < ApplicationController
 
   # GET /tasks or /tasks.json
   def index
-    @tasks = Task.all
+    # Find all groups accessible from the current user’s group
+    group_ids = current_user.group.bfs_descendant_ids
+  
+    # Fetch tasks where visible_up_to_id matches those groups
+    @tasks = Task.where(visible_up_to_id: group_ids)
   end
 
   # GET /tasks/1 or /tasks/1.json
