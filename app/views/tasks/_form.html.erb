@@ -1,0 +1,61 @@
+<%= form_with(model: task, class: "contents") do |form| %>
+  <% if task.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-500 px-3 py-2 font-medium rounded-md mt-3">
+      <h2><%= pluralize(task.errors.count, "error") %> prohibited this task from being saved:</h2>
+      <ul class="list-disc ml-6">
+        <% task.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="my-5">
+    <%= form.label :name %>
+    <%= form.text_field :name, class: input_class(task, :name) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :description %>
+    <%= form.text_area :description, rows: 4, class: input_class(task, :description) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :created_by_id, "Created By" %>
+    <%= form.text_field :created_by_id, class: input_class(task, :created_by_id), value: current_user.id, readonly: true %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :assigned_to_id, "Assign To" %>
+    <%= form.collection_select :assigned_to_id, User.all, :id, :name, { prompt: "Select User" }, class: input_class(task, :assigned_to_id) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :visible_up_to_id, "Visible Up To (Group)" %>
+    <%= form.collection_select :visible_up_to_id, Group.all, :id, :name, { prompt: "Select Group" }, class: input_class(task, :visible_up_to_id) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :urgency %>
+    <%= form.select :urgency, Task.urgencies.keys.map { |u| [u.titleize, u] }, { prompt: "Select Urgency" }, class: input_class(task, :urgency) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :status %>
+    <%= form.select :status, Task.statuses.keys.map { |s| [s.titleize, s] }, { prompt: "Select Status" }, class: input_class(task, :status) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :assigned_on %>
+    <%= form.datetime_field :assigned_on, class: input_class(task, :assigned_on) %>
+  </div>
+
+  <div class="my-5">
+    <%= form.label :completed_on %>
+    <%= form.datetime_field :completed_on, class: input_class(task, :completed_on) %>
+  </div>
+
+  <div class="inline">
+    <%= form.submit class: "w-full sm:w-auto rounded-md px-3.5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white inline-block font-medium cursor-pointer" %>
+  </div>
+<% end %>

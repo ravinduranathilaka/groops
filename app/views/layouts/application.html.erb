@@ -22,9 +22,13 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body>
-    <main class="container mx-auto mt-28 px-5 flex">
+  <body class="bg-gray-50 min-h-screen">
+    <%= render 'home/header' %>
+    
+    <main class="container mx-auto px-4 py-8">
       <%= yield %>
     </main>
+    
+    <%= render 'home/footer' %>
   </body>
 </html>
