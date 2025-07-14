@@ -1,10 +1,8 @@
-class CreateUsers < ActiveRecord::Migration[8.0]
+class CreateGroups < ActiveRecord::Migration[8.0]
   def change
-    create_table :users do |t|
-      t.string :username
-      t.string :password_digest
+    create_table :groups do |t|
       t.string :name
-      t.references :group, null: false, foreign_key: true
+      t.references :parent, foreign_key: { to_table: :groups }
 
       t.timestamps
     end
