@@ -1,3 +1,6 @@
+Rails.application.config.active_record.solid_cache = nil
+Rails.application.config.active_record.solid_queue = nil
+
 require_relative "boot"
 
 require "rails/all"
