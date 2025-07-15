@@ -1,6 +1,3 @@
-Rails.application.config.active_record.solid_cache = nil
-Rails.application.config.active_record.solid_queue = nil
-
 require_relative "boot"
 
 require "rails/all"
@@ -13,6 +10,8 @@ module Groops
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
+    config.active_record.solid_cache = nil
+    config.active_record.solid_queue = nil
 
     # Please, add to the `ignore` list any other `lib` subdirectories that do
     # not contain `.rb` files, or that should not be reloaded or eager loaded.
