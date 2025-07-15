@@ -35,9 +35,16 @@ Groops is a collaborative task management system that allows organizations to:
 - Hotwire for dynamic interactions
 - Clean, intuitive interface
 
+### 🚀 Production Ready
+- Docker containerization
+- Kamal deployment configuration
+- CI/CD pipeline with GitHub Actions
+- Security scanning with Brakeman
+- Code quality checks with RuboCop
+
 ## Prerequisites
 
-- Ruby 3.2+ (check with `ruby --version`)
+- Ruby 3.4.4+ (check with `ruby --version`)
 - PostgreSQL 9.3+ 
 - Node.js (for asset compilation)
 - Rails 8.0.2
@@ -177,6 +184,8 @@ rails db:seed
 - **JavaScript**: Import maps (ESM)
 - **Authentication**: bcrypt for password hashing
 - **Deployment**: Kamal (Docker-based)
+- **CI/CD**: GitHub Actions
+- **Security**: Brakeman for vulnerability scanning
 
 ## Project Structure
 
@@ -199,6 +208,7 @@ Groops/
 ├── config/               # Configuration files
 ├── db/                  # Database migrations and seeds
 ├── test/                # Test files
+├── .github/workflows/   # CI/CD configuration
 └── public/              # Static files
 ```
 
@@ -216,6 +226,21 @@ Tasks are visible to users based on their group hierarchy. Users can see tasks t
 3. All routes (except login) require authentication
 4. Password hashing is handled by bcrypt
 
+### Production Optimizations
+- Solid gems (solid_cache, solid_queue, solid_cable) are disabled for simplified deployment
+- Docker containerization with multi-stage builds
+- Asset precompilation for production
+- Security scanning in CI/CD pipeline
+
+## CI/CD Pipeline
+
+The application includes a comprehensive CI/CD pipeline with GitHub Actions:
+
+- **Security Scanning**: Brakeman for Rails security vulnerabilities
+- **JavaScript Audit**: Dependency vulnerability scanning
+- **Code Quality**: RuboCop for consistent code style
+- **Testing**: Automated test suite with PostgreSQL
+
 ## Deployment
 
 This application is configured for deployment using Kamal. See `config/deploy.yml` for deployment configuration.
@@ -226,6 +251,17 @@ kamal deploy
 
 # Deploy with specific version
 kamal deploy --version <version>
+```
+
+### Docker Deployment
+The application includes a production-ready Dockerfile:
+
+```bash
+# Build the Docker image
+docker build -t groops .
+
+# Run the container
+docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value> --name groops groops
 ```
 
 ## Contributing
