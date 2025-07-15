@@ -46,11 +46,11 @@ Rails.application.configure do
   # Don't log any deprecations.
   config.active_support.report_deprecations = false
 
-  # Replace the default in-process memory cache store with a durable alternative.
+  # Use SolidCache with primary DB
   config.cache_store = :solid_cache_store
-  config.solid_cache.databases = { writing: :primary }
+  config.solid_cache.connects_to = { database: { writing: :primary } }
 
-  # Replace the default in-process and non-durable queuing backend for Active Job.
+  # Use SolidQueue with primary DB
   config.active_job.queue_adapter = :async
   config.solid_queue.connects_to = { database: { writing: :primary } }
 
