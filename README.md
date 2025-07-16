@@ -2,6 +2,8 @@
 
 A modern Rails 8 task management application with hierarchical group organization, built with PostgreSQL, Tailwind CSS, and Hotwire.
 
+Heroku deployment : https://groops-2895da822fa9.herokuapp.com/
+
 ## Overview
 
 Groops is a collaborative task management system that allows organizations to:
